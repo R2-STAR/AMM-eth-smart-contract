@@ -6,13 +6,14 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
-let pool = {
+let pool = {  //the two assets in the liquidity pool
   ETH: 100,
   USDC: 10000
 };
 
 let k = pool.ETH * pool.USDC;
 
+// Adding liquidity to the pool (Liquidity providers deposit both ETH and USDC into the pool)
 app.post('/addLiquidity', (req, res) => {
   const { ethAmount, usdcAmount } = req.body;
 
@@ -34,7 +35,7 @@ app.post('/addLiquidity', (req, res) => {
   res.send(`Added ${ethAmount} ETH and ${usdcAmount} USDC to the pool. New balances: ${pool.ETH} ETH, ${pool.USDC} USDC`);
 });
 
-// Users swap ETH to USDC
+// Users swap ETH to USDC (User deposits ETH into pool and buys USDC from it)
 app.post('/swapEthToUSDC', (req, res) => {
   const { ethAmount } = req.body;
 
@@ -46,7 +47,7 @@ app.post('/swapEthToUSDC', (req, res) => {
   res.send(`Swapped ${ethAmount} ETH for ${usdcAmount} USDC. The price you bought it at is ${usdcAmount / ethAmount} USDC/ETH. New pool balances: ${pool.ETH} ETH, ${pool.USDC} USDC`);
 });
 
-// Users swap USDC to ETH
+// Users swap USDC to ETH (User buys ETH from pool and deposits USDC into it)
 app.post('/swapUSDCToEth', (req, res) => {
   const { userId, usdcAmount } = req.body;
 
